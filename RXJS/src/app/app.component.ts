@@ -53,6 +53,7 @@ export class AppComponent implements OnInit{
         setTimeout(() => {
           subscriber.next('Resposta com delay ' + nome);
         }, 5000);
+        subscriber.complete();
       }
       else{
         subscriber.error('Ops! deu erro!');
@@ -71,7 +72,17 @@ export class AppComponent implements OnInit{
     this.minhaObservable('Eduardo')
     .subscribe(
       result=> console.log(result),
-      erro => console.log(erro)
+      erro => console.log(erro),
+      () => console.log('FIM!')
     );
+
+    const observer = {
+      next: valor => console.log('next:', valor),
+      error: erro => console.log('erro:', erro),
+      complete: () => console.log('complete: FIM!')
+    }
+
+    const obs = this.minhaObservable('Eduardo');
+    obs.subscribe(observer);
   }
 }
